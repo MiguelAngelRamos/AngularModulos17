@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routes";
+import { HttpClientModule } from "@angular/common/http";
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { AppRoutingModule } from "./app.routes";
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule
 
   ],
   bootstrap: [AppComponent],
