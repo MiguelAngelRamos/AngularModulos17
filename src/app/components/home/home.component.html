@@ -10,10 +10,10 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let student of students">
-        <td>{{ student.id}}</td>
-        <td>{{ student.name}}</td>
-        <td>{{ student.age}}</td>
+      <tr *ngFor="let s of students">
+        <th scope="row">{{ s.id}}</th>
+        <td>{{ s.name}}</td>
+        <td>{{ s.age}}</td>
         <td>Action</td>
       </tr>
     </tbody>
