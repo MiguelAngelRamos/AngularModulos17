@@ -1,56 +1,53 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { HomeComponent } from './home.component';
 import { StudentService } from "../../services/students.service";
-import { Router } from "@angular/router";
-import { of } from "rxjs";
-import { IStudent } from '../../interface/student';
+import {RouterTestingModule} from "@angular/router/testing";
+import {IStudent} from "../../interface/student";
+import {of} from "rxjs";
+
 
 describe('HomeComponent', () => {
 
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let mockStudentsService: any;
-  let mockRouter: any;
+  let studentServiceMock: jasmine.SpyObj<StudentService>;
 
-  beforeEach(() => {
-    mockStudentsService = { getStudents: jasmine.createSpy('getStudents').and.returnValue(of([]))};
-    mockRouter = { navigate: jasmine.createSpy('navigate')};
+  beforeEach(async () => {
+    studentServiceMock = jasmine.createSpyObj('StudentService', ['getStudents'])
 
-    TestBed.configureTestingModule( {
+    await TestBed.configureTestingModule( {
       declarations: [HomeComponent],
-      providers: [
-        {provide: StudentService, useValue: mockStudentsService},
-        {provide: Router, useValue: mockRouter}
-      ]
+      imports: [RouterTestingModule],
+      providers: [ { provide: StudentService, useValue: studentServiceMock}]
     }).compileComponents();
+  });
 
+  beforeEach(()=> {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-
   });
 
-  it('should call getCharacters on ngOnInit', () => {
-    // Test para verificar que se llama a getCharacters en ngOnInit.
-    expect(mockStudentsService.getStudents).toHaveBeenCalled();
-    // Verifica que el método getCharacters del servicio mock ha sido llamado.
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
-  it('should display students', () => {
 
-    const testStudents: IStudent[] = [
-      {id: 1, name: 'Student A', age: 20},
-      {id: 2, name: 'Student B', age: 22},
-    ];
+  it('should call getStudents on StudentService', () => {
+    const students: IStudent[] = [{id: 1, name: 'Sofia', age: 27}];
+    studentServiceMock.getStudents.and.returnValue(of(students));
+    fixture.detectChanges();
+    expect(studentServiceMock.getStudents).toHaveBeenCalled();
+  });
 
-    mockStudentsService.getStudents.and.returnValue(of(testStudents));
+  it('should render students', () => {
+    const students: IStudent[] = [{id: 1, name: 'Sofia', age: 27}];
+    studentServiceMock.getStudents.and.returnValue(of(students));
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
-    // HTML
-
-    expect(compiled.querySelector('table').textContent).toContain('Student A');
-    expect(compiled.querySelector('table').textContent).toContain('Student B');
-
-
+    const compiled = fixture.nativeElement as HTMLElement;
+    const tbodyElement = compiled.querySelector('table tbody');
+    expect(tbodyElement).not.toBeNull();
+    expect(tbodyElement?.textContent).toContain('Sofia');
+    // expect(compiled.querySelector('table tbody').textContent).toContain('Sofia');
   })
+
 });
