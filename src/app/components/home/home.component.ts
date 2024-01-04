@@ -15,6 +15,9 @@ export class HomeComponent {
               private router: Router) {}
 
   ngOnInit():void {
-    this.studentService.getStudents().subscribe((students: IStudent[]) => this.students = students);
+    this.studentService.getStudents().subscribe((students: IStudent[]) => {
+      this.students = students;
+      console.log(this.students);
+    });
   }
 }

@@ -9,17 +9,17 @@ describe('HomeComponent', () => {
 
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let mockStudentService: any;
+  let mockStudentsService: any;
   let mockRouter: any;
 
   beforeEach(() => {
-    mockStudentService = { getStudents: jasmine.createSpy('getStudents').and.returnValue(of([]))};
+    mockStudentsService = { getStudents: jasmine.createSpy('getStudents').and.returnValue(of([]))};
     mockRouter = { navigate: jasmine.createSpy('navigate')};
 
     TestBed.configureTestingModule( {
       declarations: [HomeComponent],
       providers: [
-        {provide: StudentService, useValue: mockStudentService},
+        {provide: StudentService, useValue: mockStudentsService},
         {provide: Router, useValue: mockRouter}
       ]
     }).compileComponents();
@@ -30,6 +30,11 @@ describe('HomeComponent', () => {
 
   });
 
+  it('should call getCharacters on ngOnInit', () => {
+    // Test para verificar que se llama a getCharacters en ngOnInit.
+    expect(mockStudentsService.getStudents).toHaveBeenCalled();
+    // Verifica que el método getCharacters del servicio mock ha sido llamado.
+  });
   it('should display students', () => {
 
     const testStudents: IStudent[] = [
@@ -37,11 +42,12 @@ describe('HomeComponent', () => {
       {id: 2, name: 'Student B', age: 22},
     ];
 
-    mockStudentService.getStudents.and.returnValue(of(testStudents));
+    mockStudentsService.getStudents.and.returnValue(of(testStudents));
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement;
     // HTML
+
     expect(compiled.querySelector('table').textContent).toContain('Student A');
     expect(compiled.querySelector('table').textContent).toContain('Student B');
 
