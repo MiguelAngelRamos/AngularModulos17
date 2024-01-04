@@ -20,4 +20,9 @@ export class HomeComponent {
       console.log(this.students);
     });
   }
+
+  irStudent(id: number) {
+    this.router.navigate(['/students', id]);
+  }
+
 }

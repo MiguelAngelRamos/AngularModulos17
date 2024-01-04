@@ -10,11 +10,13 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let s of students">
-        <th scope="row">{{ s.id}}</th>
-        <td>{{ s.name}}</td>
-        <td>{{ s.age}}</td>
-        <td>Action</td>
+      <tr *ngFor="let student of students">
+        <th scope="row">{{ student.id}}</th>
+        <td>{{ student.name}}</td>
+        <td>{{ student.age}}</td>
+        <td>
+          <button class="btn btn-success btn-sm" (click)="irStudent(student.id)">Ir Student</button>
+        </td>
       </tr>
     </tbody>
   </table>
